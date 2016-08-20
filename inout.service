@@ -1,0 +1,10 @@
+[Unit]
+Description = In/Out Service
+
+[Service]
+Type=simple
+ExecStart=/opt/inout/main.py
+EnvironmentFile=/opt/inout/config
+
+[Install]
+WantedBy=default.target
