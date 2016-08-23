@@ -1,16 +1,17 @@
 #!/usr/bin/python
 
-import bluetooth
+# import bluetooth
 import time
 import urllib, urllib2
 import os, json
 
 def find(id):
-        result = bluetooth.lookup_name(id, timeout=4)
-        if result == None:
-            return "OUT"
-        else:
-            return "IN"
+    return "IN"
+    # result = bluetooth.lookup_name(id, timeout=4)
+    # if result == None:
+    #     return "OUT"
+    # else:
+    #     return "IN"
 
 def get_devices(opts):
     headers = {"Authorization": "Bearer {0}".format(opts["token"])}
@@ -30,8 +31,7 @@ def load_opts():
     return {"token": token, "url": url}
 
 def send_status(opts, id, status):
-    url = "{0}{1}/{2}".format(opts["url"], id, status) 
-    print url
+    url = "{0}status/{1}/{2}".format(opts["url"], id, status) 
     headers = {"Authorization": "Bearer {0}".format(opts["token"])}
     data = urllib.urlencode({})
     req = urllib2.Request(url, data, headers)
@@ -49,7 +49,8 @@ if __name__ == "__main__":
                 id = d["_id"]
                 blueid = d["bluetoothId"]
                 status = find(blueid)
-                send_status(opts, id, status)
+                if status <> d["status"]:
+                    send_status(opts, id, status)
         except Exception as e:
             print "error: {0}".format(e)
         time.sleep(10)
