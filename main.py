@@ -1,17 +1,16 @@
 #!/usr/bin/python
 
-# import bluetooth
+import bluetooth
 import time
 import urllib, urllib2
 import os, json
 
 def find(id):
-    return "IN"
-    # result = bluetooth.lookup_name(id, timeout=4)
-    # if result == None:
-    #     return "OUT"
-    # else:
-    #     return "IN"
+    result = bluetooth.lookup_name(id, timeout=4)
+    if result == None:
+     return "OUT"
+    else:
+     return "IN"
 
 def get_devices(opts):
     headers = {"Authorization": "Bearer {0}".format(opts["token"])}
