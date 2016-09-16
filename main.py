@@ -39,8 +39,30 @@ def send_status(opts, id, status):
     except urllib2.HTTPError as e:
         print e.code
 
+def write_ip():
+    os.system("ifconfig | grep 'inet addr' | grep -v '127.0.0.1' > /opt/inout/ip.txt")
+
+def read_ip():
+    s = ''
+    with open("/opt/inout/ip.txt", 'r') as f:
+        s = f.read()
+    return s
+
+def post_ip(opts):
+    write_ip()
+    ip = read_ip()
+    url = "{0}/ip".format(opts["url"]) 
+    headers = {"Authorization": "Bearer {0}".format(opts["token"])}
+    data = urllib.urlencode({"ip": ip})
+    req = urllib2.Request(url, data, headers)
+    try:
+        urllib2.urlopen(req)
+    except urllib2.HTTPError as e:
+        print e.code
+
 if __name__ == "__main__":
     opts = load_opts()
+    post_ip(opts)
     while True:
         try:
             devices = get_devices(opts)
